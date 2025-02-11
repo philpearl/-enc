@@ -54,14 +54,14 @@ func TestMap(t *testing.T) {
 			},
 		},
 		{
-			name: "string,*int",
+			name: "string,*int,2 things",
 			data: map[string]*int{
 				"hat": nil,
 				"it":  &one,
 			},
 		},
 		{
-			name: "string,*int",
+			name: "string,*int,3 things",
 			data: map[string]*int{
 				"hat": nil,
 				"it":  &one,

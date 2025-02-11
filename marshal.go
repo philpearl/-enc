@@ -27,7 +27,7 @@ func Size(value any) (int, error) {
 func (p *Plenc) preamble(value any) (unsafe.Pointer, plenccodec.Codec, error) {
 	typ := reflect.TypeOf(value)
 	ptr := unpackEFace(value).data
-	if typ.Kind() == reflect.Ptr {
+	if typ.Kind() == reflect.Pointer {
 		typ = typ.Elem()
 
 		// When marshalling we don't want a pointer to a map as a map is a
@@ -63,7 +63,7 @@ func (p *Plenc) Marshal(data []byte, value any) ([]byte, error) {
 
 func (p *Plenc) Unmarshal(data []byte, value any) error {
 	rv := reflect.ValueOf(value)
-	if rv.Kind() != reflect.Ptr || rv.IsNil() {
+	if rv.Kind() != reflect.Pointer || rv.IsNil() {
 		return fmt.Errorf("you must pass in a non-nil pointer")
 	}
 
@@ -72,7 +72,7 @@ func (p *Plenc) Unmarshal(data []byte, value any) error {
 		return err
 	}
 
-	_, err = c.Read(data, unsafe.Pointer(rv.Pointer()), c.WireType())
+	_, err = c.Read(data, rv.UnsafePointer(), c.WireType())
 	return err
 }
 
